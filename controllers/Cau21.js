@@ -21,7 +21,7 @@ myApp.controller(
         )
         .then(function (response) {
           vm.sinhvien_list = response.data.sinhvien_data;
-          $scope.total_row = response.data.total;
+          $scope.total_row = 2* +response.data.total;
         });
     };
 

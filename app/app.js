@@ -36,7 +36,7 @@ myApp.config(function ($stateProvider, $locationProvider, $urlRouterProvider) {
         },
       })
 
-      .state("/cau 21", {
+      .state("cau 21", {
         url: "/truyvan21",
         templateUrl: "templates/truyvan21.php",
         controller: "Cau21",
