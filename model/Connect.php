@@ -27,11 +27,11 @@ class sinhvien
        
        $search='';
        if($search_input!=''){
-         $search="WHERE ( TEN LIKE '%$search_input%' OR DCHI like '%$search_input%' OR DTHOAI like '%$search_input%' OR LUONG like '$search_input%' OR LOAINV like '%$search_input%' )";  
+         $search="WHERE ( TEN LIKE '%$search_input%' )";  
        }
       
      
-       $sql = "SELECT * FROM NhanVien $search ORDER BY MANV desc LIMIT $page,$perpage";
+       $sql = "SELECT * FROM khachhang $search ORDER BY MAKH LIMIT $page,$perpage";
      
        $query=  $this->conn->query($sql);
        $sinhvien=array();
@@ -41,7 +41,7 @@ class sinhvien
        }
        }       
        
-    $count_sql = "SELECT COUNT(*) FROM NhanVien $search";
+    $count_sql = "SELECT COUNT(*) FROM khachhang $search";
     $query=  $this->conn->query($count_sql);
     $total = mysqli_fetch_row($query);
     $sinhvien['total'][]= $total;       
@@ -50,46 +50,40 @@ class sinhvien
     }
     
     public function Tao_thongtin_sinhvien($post_data=array()){
+       
+       $MAKH='';
+       if (isset($post_data->MAKH)) {
+           $MAKH= mysqli_real_escape_string($this->conn, trim($post_data->MAKH));
+       }
+
          
     
-       $manv='';
-       if(isset($post_data->manv)){
-       $manv= mysqli_real_escape_string($this->conn,trim($post_data->manv));
-       }
-       $tennv='';
-       if(isset($post_data->tennv)){
-       $tennv= mysqli_real_escape_string($this->conn,trim($post_data->tennv));
+       $TEN='';
+       if(isset($post_data->TEN)){
+       $TEN= mysqli_real_escape_string($this->conn,trim($post_data->TEN));
        }
        
-        $diachi='';
-       if(isset($post_data->diachi)){
-       $diachi= mysqli_real_escape_string($this->conn,trim($post_data->diachi));
+       
+       $DCHI='';
+       if(isset($post_data->DCHI)){
+       $DCHI= mysqli_real_escape_string($this->conn,trim($post_data->DCHI));
        }
        
-       $dienthoai='';
-       if(isset($post_data->dienthoai)){
-       $dienthoai= mysqli_real_escape_string($this->conn,trim($post_data->dienthoai));
+       $DTHOAI='';
+       if(isset($post_data->DTHOAI)){
+       $DTHOAI= mysqli_real_escape_string($this->conn,trim($post_data->DTHOAI));
        }
        
-       $luongnv='';
-       if(isset($post_data->luongnv)){
-       $luongnv= mysqli_real_escape_string($this->conn,trim($post_data->luongnv));
-       }
-       
-       $loainv='';
-       if(isset($post_data->loainv)){
-       $loainv= mysqli_real_escape_string($this->conn,trim($post_data->loainv));
-       }
       
      
-       $sql="INSERT INTO NHANVIEN(MANV, TEN, DCHI, DTHOAI, LUONG, LOAINV) VALUES ('$manv', '$tennv', '$diachi','$dienthoai','$luongnv','$loainv')";
+       $sql="INSERT INTO khachhang(MAKH, TEN, DCHI, DTHOAI) VALUES ('$MAKH','$TEN', '$DCHI', '$DTHOAI')";
         
         $result=  $this->conn->query($sql);
         
         if($result){
-          return 'Đã thêm được 1 nhân viên';     
+          return 'Đã thêm được 1 Khách hàng';     
         }else{
-           return 'Kiểm tra thông tin để nhập vào, lỗi';
+           return 'Kiểm tra thông tin để nhập vào, lỗi';     
         }
           
        
@@ -100,9 +94,9 @@ class sinhvien
     
     public function view_sinhvien_id($id){
        if(isset($id)){
-       $manv= mysqli_real_escape_string($this->conn,trim($id));
-       //echo $SV_id1;
-       $sql="Select * from NhanVien where MaNV=$manv";
+       $MAKH1= mysqli_real_escape_string($this->conn,trim($id));
+       //echo $MAKH1;
+       $sql="Select * from khachhang where MAKH=$MAKH1";
         
        $result=  $this->conn->query($sql);
      
@@ -113,20 +107,40 @@ class sinhvien
     
     
     public function update_thongtin_sinhvien($post_data=array()){
-       if( isset($post_data->MANV)){
-       $MANV=mysqli_real_escape_string($this->conn,trim($post_data->MANV));
+       if( isset($post_data->MAKH)){
+       $MAKH=mysqli_real_escape_string($this->conn,trim($post_data->MAKH));
            
        $TEN='';
        if(isset($post_data->TEN)){
        $TEN= mysqli_real_escape_string($this->conn,trim($post_data->TEN));
        }
+       $email='';
+       if(isset($post_data->email)){
+       $email= mysqli_real_escape_string($this->conn,trim($post_data->email));
+       }
+       
+        $gioitinh='';
+       if(isset($post_data->gioitinh)){
+       $gioitinh= mysqli_real_escape_string($this->conn,trim($post_data->gioitinh));
+       }
+       
+       
+       $DCHI='';
+       if(isset($post_data->DCHI)){
+       $DCHI= mysqli_real_escape_string($this->conn,trim($post_data->DCHI));
+       }
+        $Quocgia='';
+       if(isset($post_data->Quocgia)){
+       $Quocgia= mysqli_real_escape_string($this->conn,trim($post_data->Quocgia));
+       }
+       
 
-       $sql="UPDATE NHANVIEN SET TEN='$TEN' WHERE MANV =$MANV";
+       $sql="UPDATE khachhang SET TEN='$TEN' WHERE MAKH =$MAKH";
      
         $result=  $this->conn->query($sql);
         
          
-         unset($post_data->MANV); 
+         unset($post_data->MAKH); 
         if($result){
           return 'Đã cập nhật thành công';     
         }else{
@@ -139,12 +153,12 @@ class sinhvien
        }   
     }
     
-    public function delete_thongtin_sinhvien($id){
+    public function delete_thongtin_sinhvien($MAKH){
         
-       if(isset($id)){
-       $SV_id1= mysqli_real_escape_string($this->conn,trim($id));
+       if(isset($MAKH)){
+       $MAKH1= mysqli_real_escape_string($this->conn,trim($MAKH));
 
-       $sql="DELETE FROM  sinhviens  WHERE SV_id =$SV_id1";
+       $sql="DELETE FROM  sinhviens  WHERE MAKH =$MAKH1";
         $result=  $this->conn->query($sql);
         
         if($result){

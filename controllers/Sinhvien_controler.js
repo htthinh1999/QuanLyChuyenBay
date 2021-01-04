@@ -14,7 +14,7 @@ myApp.controller('sinhvien_controler', function ($scope, $state, $http, $locatio
         var search_input = document.getElementById("search_input").value;
         $http.get('model/select.php?page=' + page_number + '&search_input=' + search_input).then(function (response) {
             vm.sinhvien_list = response.data.sinhvien_data;
-            $scope.total_row = 2 * +response.data.total;
+            $scope.total_row = 2* +response.data.total;
         });
     };
 
@@ -24,7 +24,8 @@ myApp.controller('sinhvien_controler', function ($scope, $state, $http, $locatio
 
         var begin = (($scope.currentPage - 1) * $scope.numPerPage)
                 , end = begin + $scope.numPerPage;
-        
+
+
     });
 //    
 
@@ -39,8 +40,8 @@ myApp.controller('sinhvien_controler', function ($scope, $state, $http, $locatio
         });
     };
 
-    this.edit_sinhvien_info = function (manv) {
-        $http.get('model/selectone.php?manv=' + manv).then(function (response) {
+    this.edit_sinhvien_info = function (MAKH) {
+        $http.get('model/selectone.php?MAKH=' + MAKH).then(function (response) {
             vm.sinhvien_info = response.data;
         });
     };
@@ -56,18 +57,18 @@ myApp.controller('sinhvien_controler', function ($scope, $state, $http, $locatio
     };
 
 
-    this.get_sinhvien_info = function (SV_id) {
-        $http.get('model/selectone.php?SV_id=' + SV_id).then(function (response) {
+    this.get_sinhvien_info = function (MAKH) {
+        $http.get('model/selectone.php?MAKH=' + MAKH).then(function (response) {
             vm.view_sinhvien_info = response.data;//alert(response.data);
         });
     };
 
 
-    this.delete_sinhvien_info = function (SV_id) {
+    this.delete_sinhvien_info = function (MAKH) {
         if (confirm("Bạn có chắc chẵn xóa không","Thông báo"))
            {
                 //do your process of delete using angular js.           
-        $http.delete('model/delete.php?SV_id=' + SV_id).then(function (response) {
+        $http.delete('model/delete.php?MAKH=' + MAKH).then(function (response) {
             vm.msg = response.data.message;
             vm.alert_class = 'custom-alert';
             vm.loadData($scope.currentPage);
